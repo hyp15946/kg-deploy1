@@ -85,11 +85,70 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.story-card {
+  background: var(--card);
+  border: 1px solid #4a3f7a;
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 18px;
+}
+
+.story-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tone-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #1a1430;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.story-title {
+  color: var(--muted);
+}
+
+.story-title b {
+  color: var(--accent);
+}
+
+.story {
+  line-height: 1.9;
+  white-space: pre-wrap;
+  font-size: 1.02rem;
+}
+
+.notice {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.loading {
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 16px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 .record {
   background: var(--card);
   border: 1px solid #332d55;
   border-radius: 16px;
   padding: 20px 24px;
+  opacity: 0.85;
 }
 
 .record-head {

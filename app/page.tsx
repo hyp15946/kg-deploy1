@@ -11,6 +11,14 @@ type PastLife = {
   memory: string;
 };
 
+type Result = {
+  name: string;
+  tone: string;
+  story: string;
+  record: PastLife;
+  generated: boolean;
+};
+
 const FIELDS: { key: keyof PastLife; label: string; icon: string }[] = [
   { key: "being", label: "전생의 직업 · 존재", icon: "👤" },
   { key: "era", label: "시대", icon: "⏳" },
@@ -19,10 +27,17 @@ const FIELDS: { key: keyof PastLife; label: string; icon: string }[] = [
   { key: "memory", label: "사람들의 기억", icon: "📜" },
 ];
 
+const LOADING_MESSAGES = [
+  "전생의 기록을 펼치는 중…",
+  "먹을 갈고 붓을 드는 중…",
+  "시간의 강을 거슬러 오르는 중…",
+];
+
 export default function Home() {
   const [name, setName] = useState("");
-  const [result, setResult] = useState<{ name: string; record: PastLife } | null>(null);
+  const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState(LOADING_MESSAGES[0]);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
@@ -31,6 +46,9 @@ export default function Home() {
     if (!trimmed || loading) return;
 
     setLoading(true);
+    setLoadingMsg(
+      LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)]
+    );
     setError("");
     setResult(null);
 
@@ -53,7 +71,7 @@ export default function Home() {
   return (
     <main>
       <h1 className="title">🔮 전생 이야기</h1>
-      <p className="subtitle">이름을 넣으면 그 사람의 전생을 기록해 드립니다.</p>
+      <p className="subtitle">이름을 넣으면 그 사람의 전생을 한 편의 이야기로 써드립니다.</p>
 
       <form className="form" onSubmit={handleSubmit}>
         <input
@@ -64,27 +82,43 @@ export default function Home() {
           maxLength={40}
         />
         <button type="submit" disabled={loading || !name.trim()}>
-          {loading ? "점치는 중…" : "전생 보기"}
+          {loading ? "집필 중…" : "전생 보기"}
         </button>
       </form>
 
+      {loading && <p className="loading">{loadingMsg}</p>}
       {error && <p className="error">{error}</p>}
 
       {result && (
-        <section className="record">
-          <p className="record-head">
-            <b>{result.name}</b>님의 전생 기록
-          </p>
-          {FIELDS.map((f) => (
-            <div className="row" key={f.key}>
-              <div className="row-label">
-                <span className="icon">{f.icon}</span>
-                {f.label}
-              </div>
-              <div className="row-value">{result.record[f.key]}</div>
+        <>
+          <section className="story-card">
+            <div className="story-head">
+              <span className="tone-badge">✒️ {result.tone}</span>
+              <span className="story-title">
+                <b>{result.name}</b>님의 전생 이야기
+              </span>
             </div>
-          ))}
-        </section>
+            <p className="story">{result.story}</p>
+            {!result.generated && (
+              <p className="notice">
+                * 작가(GPT)와 연결이 원활하지 않아 기록 원문으로 보여드렸어요.
+              </p>
+            )}
+          </section>
+
+          <section className="record">
+            <p className="record-head">📁 전생 기록 원본</p>
+            {FIELDS.map((f) => (
+              <div className="row" key={f.key}>
+                <div className="row-label">
+                  <span className="icon">{f.icon}</span>
+                  {f.label}
+                </div>
+                <div className="row-value">{result.record[f.key]}</div>
+              </div>
+            ))}
+          </section>
+        </>
       )}
     </main>
   );
