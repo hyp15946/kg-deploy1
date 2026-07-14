@@ -85,14 +85,61 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.result {
+.record {
   background: var(--card);
   border: 1px solid #332d55;
   border-radius: 16px;
-  padding: 24px;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  font-size: 1.02rem;
+  padding: 20px 24px;
+}
+
+.record-head {
+  text-align: center;
+  font-size: 1.15rem;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+
+.record-head b {
+  color: var(--accent);
+}
+
+.row {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid #2a2547;
+}
+
+.row:first-of-type {
+  border-top: none;
+}
+
+.row-label {
+  flex: 0 0 130px;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  font-size: 1.05rem;
+}
+
+.row-value {
+  flex: 1;
+  line-height: 1.6;
+}
+
+@media (max-width: 520px) {
+  .row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .row-label {
+    flex-basis: auto;
+  }
 }
 
 .error {
